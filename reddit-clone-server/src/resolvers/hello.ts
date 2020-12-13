@@ -1,6 +1,6 @@
-import { Resolver } from "dns";
-import { Query } from "type-graphql";
+import { Query, Resolver } from "type-graphql";
 
+@Resolver()
 export class HelloResolver {
   @Query(() => String)
   hello() {
