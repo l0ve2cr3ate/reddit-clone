@@ -43,7 +43,8 @@ const Login: FC = () => {
               mt={4}
               type="submit"
               isLoading={isSubmitting}
-              colorScheme="teal"
+              backgroundColor="#0891B2"
+              color="#fff"
             >
               Login
             </Button>
