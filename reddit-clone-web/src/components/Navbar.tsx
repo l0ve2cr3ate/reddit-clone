@@ -3,10 +3,12 @@ import { Box, Button, Flex, Link } from "@chakra-ui/react";
 import NextLink from "next/link";
 
 import { useMeQuery, useLogoutMutation } from "../generated/graphql";
+import { isServer } from "../utils/isServer";
 
 const Navbar: FC = () => {
   const [{ fetching: logoutFetching }, logout] = useLogoutMutation();
-  const [{ data, fetching }] = useMeQuery();
+  // Server doesn't have cookie, so skip me-query when ssr.
+  const [{ data, fetching }] = useMeQuery({ pause: isServer() });
   let body = null;
 
   // data is loading
