@@ -47,7 +47,7 @@ const Navbar: FC = () => {
     );
   }
   return (
-    <Flex p={4} as="nav" bg="#0891B2">
+    <Flex position="sticky" zIndex={1} top={0} p={4} as="nav" bg="#0891B2">
       <Box ml="auto">{body}</Box>
     </Flex>
   );
