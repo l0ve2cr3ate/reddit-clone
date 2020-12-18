@@ -7,6 +7,7 @@ import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import cors from "cors";
 import { createConnection } from "typeorm";
+import path from "path";
 
 import { HelloResolver } from "./resolvers/hello";
 import { PostResolver } from "./resolvers/post";
@@ -25,8 +26,11 @@ const main = async () => {
     password: process.env.DB_PASSWORD,
     logging: true,
     synchronize: true,
+    migrations: [path.join(__dirname, "./migrations/*")],
     entities: [Post, User],
   });
+
+  await conn.runMigrations();
 
   const app = express();
 
