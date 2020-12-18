@@ -19,12 +19,10 @@ const Index = () => {
   const [variables, setVariables] = useState<{
     limit: number;
     cursor: null | string;
-  }>({ limit: 10, cursor: null });
+  }>({ limit: 33, cursor: null });
   const [{ data, fetching }] = usePostsQuery({
     variables,
   });
-
-  console.log({ variables });
 
   if (!fetching && !data) {
     return <div>Oh no something went wrong</div>;
