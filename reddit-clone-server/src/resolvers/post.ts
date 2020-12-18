@@ -6,6 +6,7 @@ import {
   InputType,
   Int,
   Mutation,
+  ObjectType,
   Query,
   Resolver,
   Root,
@@ -25,29 +26,47 @@ class PostInput {
   text: string;
 }
 
+@ObjectType()
+class PaginatedPosts {
+  @Field(() => [Post])
+  posts: Post[];
+  @Field()
+  hasMore: boolean;
+}
+
 @Resolver(Post)
 export class PostResolver {
   @FieldResolver(() => String)
   textSnippet(@Root() root: Post) {
     return root.text.slice(0, 50);
   }
-  @Query(() => [Post])
+  @Query(() => PaginatedPosts)
   async posts(
     @Arg("limit", () => Int) limit: number,
     @Arg("cursor", () => String, { nullable: true }) cursor: string | null
-  ): Promise<Post[]> {
+  ): Promise<PaginatedPosts> {
+    // Fetch one post more than what is asked for (for example, you fetch 21 posts instead of 20, see the + 1 below).
     const realLimit = Math.min(50, limit);
+    const realLimitPlusOne = realLimit + 1;
     const qb = getConnection()
       .getRepository(Post)
       .createQueryBuilder("p")
       .orderBy('"createdAt"', "DESC")
-      .take(realLimit);
+      .take(realLimitPlusOne);
 
     if (cursor) {
       qb.where('"createdAt" < :cursor', { cursor: new Date(parseInt(cursor)) });
     }
 
-    return qb.getMany();
+    const posts = await qb.getMany();
+
+    // Check if you got back all posts (posts.length === realLimitPlusOne) or less. If you got back 21 posts,
+    // you have more posts, otherwise you don't.
+    // Only return the posts that were asked for (20, not the 21st).
+    return {
+      posts: posts.slice(0, realLimit),
+      hasMore: posts.length === realLimitPlusOne,
+    };
   }
 
   @Query(() => Post, { nullable: true })
