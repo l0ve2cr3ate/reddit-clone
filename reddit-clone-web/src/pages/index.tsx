@@ -19,7 +19,7 @@ const Index = () => {
   const [variables, setVariables] = useState<{
     limit: number;
     cursor: null | string;
-  }>({ limit: 33, cursor: null });
+  }>({ limit: 15, cursor: null });
   const [{ data, fetching }] = usePostsQuery({
     variables,
   });
@@ -42,7 +42,8 @@ const Index = () => {
         <Stack spacing={8}>
           {data?.posts.posts.map((post) => (
             <Box key={post.id} p={5} shadow="md" borderWidth="1px">
-              <Heading fontSize="xl">{post.title}</Heading>
+              <Heading fontSize="xl">{post.title}</Heading>{" "}
+              <Text>Posted by {post.creator.username}</Text>
               <Text mt={4}>{post.textSnippet}</Text>
             </Box>
           ))}
