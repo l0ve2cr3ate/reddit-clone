@@ -12,11 +12,11 @@ import {
   Root,
   UseMiddleware,
 } from "type-graphql";
+import { getConnection } from "typeorm";
 
 import { Post } from "../entities/Post";
 import { MyContext } from "../types";
 import { isAuth } from "../middleware/isAuth";
-import { getConnection } from "typeorm";
 
 @InputType()
 class PostInput {
@@ -40,6 +40,7 @@ export class PostResolver {
   textSnippet(@Root() root: Post) {
     return root.text.slice(0, 50);
   }
+
   @Query(() => PaginatedPosts)
   async posts(
     @Arg("limit", () => Int) limit: number,
