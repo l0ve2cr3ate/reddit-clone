@@ -1,13 +1,14 @@
 import { FC } from "react";
 import { Box, Button, Flex, Heading, Link } from "@chakra-ui/react";
 import NextLink from "next/link";
+import { useRouter } from "next/router";
 
 import { useMeQuery, useLogoutMutation } from "../generated/graphql";
 import { isServer } from "../utils/isServer";
 
 const Navbar: FC = () => {
+  const router = useRouter();
   const [{ fetching: logoutFetching }, logout] = useLogoutMutation();
-  // Server doesn't have cookie, so skip me-query when ssr.
   const [{ data, fetching }] = useMeQuery({ pause: isServer() });
   let body = null;
 
@@ -42,7 +43,10 @@ const Navbar: FC = () => {
         </Box>
         <Button
           isLoading={logoutFetching}
-          onClick={() => logout()}
+          onClick={async () => {
+            await logout();
+            router.reload();
+          }}
           color="white"
           variant="link"
         >
