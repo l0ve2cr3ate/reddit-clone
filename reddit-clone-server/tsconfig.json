@@ -27,6 +27,7 @@
     "resolveJsonModule": true,
     "baseUrl": "."
   },
+  "typeRoots": ["./src", "./node_modules/@types"],
   "exclude": [
     "node_modules"
   ],

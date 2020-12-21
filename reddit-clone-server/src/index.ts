@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import "dotenv-safe/config";
 import express from "express";
 import Redis from "ioredis";
 import session from "express-session";
@@ -24,11 +25,9 @@ require("dotenv").config();
 const main = async () => {
   const conn = await createConnection({
     type: "postgres",
-    database: "reddit-clone2",
-    username: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
+    url: process.env.DB_URL,
     logging: true,
-    synchronize: true,
+    // synchronize: true,
     migrations: [path.join(__dirname, "./migrations/*")],
     entities: [Post, User, Updoot],
   });
@@ -40,9 +39,9 @@ const main = async () => {
   const app = express();
 
   const RedisStore = connectRedis(session);
-  const redis = new Redis();
-
-  app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+  const redis = new Redis(process.env.REDIS_URL);
+  app.set("proxy", 1);
+  app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }) as any);
 
   app.use(
     session({
@@ -88,7 +87,7 @@ const main = async () => {
     cors: false,
   });
 
-  app.listen(4000, () => {
+  app.listen(parseInt(process.env.PORT), () => {
     console.log("Server started at localhost:4000");
   });
 };
