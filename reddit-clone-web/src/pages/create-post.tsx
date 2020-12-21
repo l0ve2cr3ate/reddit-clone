@@ -1,4 +1,4 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Heading } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
@@ -16,6 +16,7 @@ export const CreatePost: FC = () => {
   const [, createPost] = useCreatePostMutation();
   return (
     <Layout variant="small">
+      <Heading mb={5}>Create Post</Heading>
       <Formik
         initialValues={{ title: "", text: "" }}
         onSubmit={async (values) => {
