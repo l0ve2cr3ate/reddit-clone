@@ -35,7 +35,7 @@ const Navbar: FC = () => {
       <Flex align="center">
         <NextLink href="/create-post">
           <Button as={Link} mr={4}>
-            <Link mr={2}>Create Post</Link>
+            Create Post
           </Button>
         </NextLink>
         <Box mr={2} color="white">
