@@ -8,12 +8,12 @@ import { isServer } from "../utils/isServer";
 
 const Navbar: FC = () => {
   const router = useRouter();
-  const [{ fetching: logoutFetching }, logout] = useLogoutMutation();
-  const [{ data, fetching }] = useMeQuery({ pause: isServer() });
+  const [logout, { loading: logoutFetching }] = useLogoutMutation();
+  const { data, loading } = useMeQuery({ skip: isServer() });
   let body = null;
 
   // data is loading
-  if (fetching) {
+  if (loading) {
   }
   // user is not logged in
   else if (!data?.me) {
