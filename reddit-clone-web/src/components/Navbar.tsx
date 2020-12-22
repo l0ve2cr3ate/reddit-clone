@@ -5,10 +5,12 @@ import { useRouter } from "next/router";
 
 import { useMeQuery, useLogoutMutation } from "../generated/graphql";
 import { isServer } from "../utils/isServer";
+import { useApolloClient } from "@apollo/client";
 
 const Navbar: FC = () => {
   const router = useRouter();
   const [logout, { loading: logoutFetching }] = useLogoutMutation();
+  const apolloClient = useApolloClient();
   const { data, loading } = useMeQuery({ skip: isServer() });
   let body = null;
 
@@ -45,7 +47,7 @@ const Navbar: FC = () => {
           isLoading={logoutFetching}
           onClick={async () => {
             await logout();
-            router.reload();
+            await apolloClient.resetStore();
           }}
           color="white"
           variant="link"
