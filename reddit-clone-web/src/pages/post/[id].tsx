@@ -1,19 +1,18 @@
 import { Heading, Text } from "@chakra-ui/react";
-import { withUrqlClient } from "next-urql";
 import { FC } from "react";
+
 import EditDeletePostButtons from "../../components/EditDeletePostButtons";
 import Layout from "../../components/Layout";
-import { createUrqlClient } from "../../utils/createUrqlClient";
 import { useGetPostFromUrl } from "../../utils/useGetPostFormUrl";
 
 const Post: FC = () => {
-  const [{ data, error, fetching }] = useGetPostFromUrl();
+  const { data, error, loading } = useGetPostFromUrl();
 
   if (error) {
     return <Layout>{error.message}</Layout>;
   }
 
-  if (fetching) {
+  if (loading) {
     return <Layout>Loading...</Layout>;
   }
 
@@ -37,4 +36,4 @@ const Post: FC = () => {
   );
 };
 
-export default withUrqlClient(createUrqlClient, { ssr: true })(Post);
+export default Post;
