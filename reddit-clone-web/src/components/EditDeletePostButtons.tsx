@@ -32,7 +32,15 @@ const EditDeletePostButtons: FC<EditDeletePostButtonsProps> = ({
       </NextLink>
       <IconButton
         variant="outline"
-        onClick={() => deletePost({ variables: { id } })}
+        onClick={() =>
+          deletePost({
+            variables: { id },
+            update: (cache) => {
+              // Post:77
+              cache.evict({ id: "Post:" + id });
+            },
+          })
+        }
         colorScheme="red"
         aria-label="Delete post"
         icon={<DeleteIcon fontSize="16px" />}
