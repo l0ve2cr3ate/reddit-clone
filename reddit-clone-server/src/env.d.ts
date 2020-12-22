@@ -7,5 +7,9 @@ declare namespace NodeJS {
     REDIS_URL: string;
     PORT: string;
     CORS_ORIGIN: string;
+    TYPEORM_USERNAME: string;
+    TYPEORM_PASSWORD: string;
+    TYPEORM_DATABASE: string;
+    TYPEORM_PORT: string;
   }
 }

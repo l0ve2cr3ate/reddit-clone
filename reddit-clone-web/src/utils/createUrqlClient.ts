@@ -90,7 +90,7 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
   }
 
   return {
-    url: "http://localhost:4000/graphql",
+    url: process.env.NEXT_PUBLIC_API_URL as string,
     fetchOptions: {
       credentials: "include" as const,
       headers: cookie
@@ -112,13 +112,13 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
         },
         updates: {
           Mutation: {
-            deletePost(_result, args, cache, info) {
+            deletePost(_result, args, cache) {
               cache.invalidate({
                 __typename: "Post",
                 id: (args as DeletePostMutationVariables).id,
               });
             },
-            vote: (_result, args, cache, info) => {
+            vote: (_result, args, cache) => {
               const { postId, value } = args as VoteMutationVariables;
 
               const data: any = cache.readFragment(
@@ -149,10 +149,10 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
                 );
               }
             },
-            createPost: (_result, args, cache, info) => {
+            createPost: (_result, __, cache) => {
               invalidateAllPosts(cache);
             },
-            logout: (_result, args, cache, info) => {
+            logout: (_result, __, cache) => {
               betterUpdateQuery<LogoutMutation, MeQuery>(
                 cache,
                 { query: MeDocument },
@@ -160,7 +160,7 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
                 () => ({ me: null })
               );
             },
-            login: (_result, args, cache, info) => {
+            login: (_result, __, cache) => {
               betterUpdateQuery<LoginMutation, MeQuery>(
                 cache,
                 { query: MeDocument },
@@ -177,7 +177,7 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
               );
               invalidateAllPosts(cache);
             },
-            register: (_result, args, cache, info) => {
+            register: (_result, __, cache) => {
               betterUpdateQuery<RegisterMutation, MeQuery>(
                 cache,
                 { query: MeDocument },

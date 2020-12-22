@@ -23,7 +23,7 @@ const InputField: FC<InputFieldProps> = ({
   const [field, { error }] = useField(props);
   let InputOrTextarea = Input;
   if (textarea) {
-    InputOrTextarea = Textarea;
+    (InputOrTextarea as any) = Textarea;
   }
   return (
     <FormControl isInvalid={Boolean(error)}>
