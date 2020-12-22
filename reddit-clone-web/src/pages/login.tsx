@@ -5,9 +5,10 @@ import { useRouter } from "next/router";
 
 import Wrapper from "../components/Wrapper";
 import InputField from "../components/InputField";
-import { useLoginMutation } from "../generated/graphql";
+import { MeDocument, MeQuery, useLoginMutation } from "../generated/graphql";
 import { toErrorMap } from "../utils/toErrorMap";
 import NextLink from "next/link";
+import { withApollo } from "../utils/withApollo";
 
 const Login: FC = () => {
   const router = useRouter();
@@ -17,7 +18,19 @@ const Login: FC = () => {
       <Formik
         initialValues={{ usernameOrEmail: "", password: "" }}
         onSubmit={async (values, { setErrors }) => {
-          const response = await login({ variables: values });
+          const response = await login({
+            variables: values,
+            update: (cache, { data }) => {
+              cache.writeQuery<MeQuery>({
+                query: MeDocument,
+                data: {
+                  __typename: "Query",
+                  me: data?.login.user,
+                },
+              });
+              cache.evict({ fieldName: "posts:{}" });
+            },
+          });
           if (response.data?.login.errors) {
             setErrors(toErrorMap(response.data.login.errors));
           } else if (response.data?.login.user) {
@@ -65,4 +78,4 @@ const Login: FC = () => {
   );
 };
 
-export default Login;
+export default withApollo({ ssr: false })(Login);

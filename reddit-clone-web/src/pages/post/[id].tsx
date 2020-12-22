@@ -4,6 +4,7 @@ import { FC } from "react";
 import EditDeletePostButtons from "../../components/EditDeletePostButtons";
 import Layout from "../../components/Layout";
 import { useGetPostFromUrl } from "../../utils/useGetPostFormUrl";
+import { withApollo } from "../../utils/withApollo";
 
 const Post: FC = () => {
   const { data, error, loading } = useGetPostFromUrl();
@@ -36,4 +37,4 @@ const Post: FC = () => {
   );
 };
 
-export default Post;
+export default withApollo({ ssr: true })(Post);

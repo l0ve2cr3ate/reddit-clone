@@ -10,6 +10,7 @@ import {
   useUpdatePostMutation,
 } from "../../../generated/graphql";
 import { useGetIntId } from "../../../utils/useGetIntId";
+import { withApollo } from "../../../utils/withApollo";
 
 const EditPost: FC = () => {
   const router = useRouter();
@@ -69,4 +70,4 @@ const EditPost: FC = () => {
   );
 };
 
-export default EditPost;
+export default withApollo({ ssr: false })(EditPost);
