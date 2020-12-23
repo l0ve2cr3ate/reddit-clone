@@ -6,6 +6,23 @@ Stack:
 
 - Typescript
 - Nodejs
-- GraphQl
-- MikroORM
+- GraphQL
+- URQL -> replaced with Apollo Client
+- MikroORM -> replaced with TypeORM
 - PostgresQL
+- Redis
+- Nextjs (React)
+- Chakra UI
+- TypeGraphQL
+
+To start the server run the following commands: <br>
+`cd reddit-clone-server` <br>
+`yarn watch` <br>
+
+In another terminal window:
+`cd reddit-clone-server` <br>
+`yarn dev` <br>
+
+To start the frontend run the following commands: <br>
+`cd reddit-clone-web` <br>
+`yarn dev`
